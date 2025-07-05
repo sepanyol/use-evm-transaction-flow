@@ -21,8 +21,6 @@ const templatePackageJson = JSON.parse(readFileSync(templatePath, "utf-8"));
 //   "@tanstack/react-query",
 // ]);
 
-console.log();
-
 const finalPackageJson = {
   ...templatePackageJson,
   main: "index.cjs.js",

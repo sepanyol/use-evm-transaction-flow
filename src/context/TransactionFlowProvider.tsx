@@ -19,18 +19,11 @@ export const TransactionFlowProvider: React.FC<{
   const wagmiContext = useContext(WagmiContext);
   // Runtime safety check: Is Wagmi context available?
   useEffect(() => {
-    console.log(
-      Date.now(),
-      "[TransactionFlowProvider] useEffect",
-      wagmiContext?.state
-    );
     if (!wagmiContext)
       console.warn(
         "[TransactionFlowProvider] No <WagmiConfig> found. Assuming RainbowKit or AppKit is providing the client."
       );
   }, [wagmiContext]);
-
-  console.log(Date.now(), "[TransactionFlowProvider]", wagmiContext?.state);
 
   const { walletClient, isConnected } = useEvmClients();
 
@@ -55,10 +48,9 @@ export const TransactionFlowProvider: React.FC<{
 // Custom hook to access context
 export const useTransactionFlow = (): TransactionFlowContextValue => {
   const context = useContext(TransactionFlowContext);
-  if (!context) {
+  if (!context)
     throw new Error(
       "useTransactionFlow must be used within a <TransactionFlowProvider>"
     );
-  }
   return context;
 };
