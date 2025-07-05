@@ -63,9 +63,9 @@ const handleClick = () => {
 
 ## TODOs
 
-[ ] sophisticated status handling
-[ ] proper integration testing with wagmi mock
-[ ] tbd...
+[ ] sophisticated status handling  
+[ ] proper integration testing with wagmi mock  
+[ ] tbd...  
 
 ## License
 
