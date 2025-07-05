@@ -1,0 +1,10 @@
+src/
+*.test.ts
+*.test.tsx
+*.spec.ts
+.vscode/
+node_modules/
+vite.svg
+tsconfig.*.json
+*.config.ts
+__tests__/

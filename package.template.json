@@ -1,0 +1,22 @@
+{
+  "name": "@s3panyol/use-evm-transaction-flow",
+  "version": "0.1.0-beta.0",
+  "description": "Composable transaction hook for EVM (ERC20/ERC721/ERC1155 + ETH) using Viem and Wagmi",
+  "author": "Daniel Ceballos <hi@ceballos.io>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sepanyol/use-evm-transaction-flow"
+  },
+  "keywords": [
+    "evm",
+    "hook",
+    "wagmi",
+    "viem",
+    "erc20",
+    "erc721",
+    "erc1155",
+    "react",
+    "transactions"
+  ]
+}

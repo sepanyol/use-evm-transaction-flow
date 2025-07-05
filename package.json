@@ -1,0 +1,50 @@
+{
+  "name": "use-evm-transaction-flow",
+  "version": "0.1.0",
+  "description": "Composable transaction hook for EVM (ERC20/ERC721/ERC1155 + ETH) using Viem and Wagmi",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "build-for-publish": "npx vite -c ./vite.publish.config.ts build",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "test": "vitest",
+    "test:watch": "vitest --watch"
+  },
+  "dependencies": {
+    "@rainbow-me/rainbowkit": "^2.2.8",
+    "@reown/appkit": "^1.7.12",
+    "@reown/appkit-adapter-wagmi": "^1.7.12",
+    "@reown/appkit-wallet-button": "^1.7.12",
+    "@tanstack/react-query": "^5.81.5",
+    "connectkit": "^1.9.1",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "viem": "^2.31.6",
+    "wagmi": "^2.15.6"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.29.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.3.0",
+    "@types/lodash": "^4.17.20",
+    "@types/node": "^24.0.10",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@vitejs/plugin-react": "^4.5.2",
+    "@wagmi/connectors": "^5.8.5",
+    "@wagmi/core": "^2.17.3",
+    "eslint": "^9.29.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.20",
+    "globals": "^16.2.0",
+    "husky": "^9.1.7",
+    "jsdom": "^26.1.0",
+    "lodash": "^4.17.21",
+    "typescript": "~5.8.3",
+    "typescript-eslint": "^8.34.1",
+    "vite": "^7.0.0",
+    "vite-plugin-dts": "^4.5.4",
+    "vitest": "^3.2.4"
+  }
+}
