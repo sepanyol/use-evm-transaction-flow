@@ -15,13 +15,11 @@ interface UseEvmTransactionFlowParams {
   tokenId?: bigint; // For ERC721/ERC1155
   amount?: bigint; // For ERC20/ERC1155
   confirmations?: number; // Defaults to 1
-  requireExplicitApproval?: boolean;
-
-  contractAddress: Address;
-  abi: Abi;
-  functionName: string;
-  args: unknown[];
-  value?: bigint;
+  requireExplicitApproval?: boolean; // set true if you want to force approval
+  contractAddress: Address; // address that should be called to execute `functionName`
+  abi: Abi; // see viem documentation
+  functionName: string; // see viem documentation
+  args: unknown[]; // see viem documentation
 }
 
 export const useEvmTransactionFlow = ({
@@ -30,8 +28,8 @@ export const useEvmTransactionFlow = ({
   spender,
   tokenId,
   amount,
-  requireExplicitApproval = false,
   confirmations = 1,
+  requireExplicitApproval = false,
   contractAddress,
   abi,
   functionName,

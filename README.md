@@ -33,6 +33,21 @@ npm install @s3panyol/use-evm-transaction-flow
 
 ### Hook
 
+#### useEvmClients
+
+```tsx
+const {
+  walletClient, // wallet client that will get used for writing transaction
+  publicClient, // client for reading from the network
+  account, // address of the connected account
+  accounts, // addesses of all connected accounts
+  isConnected, // flag is a wallet is connected
+  isReady, // flag if client is fully usable
+} = useEvmClients();
+```
+
+#### useEvmTransactionFlow
+
 ```tsx
 const {
     run, // executes the process
@@ -50,7 +65,25 @@ const {
     isSuccess, // if everything is finished, this flag will be true
     isError, // true on error
     isReady, // equivalent of isReadyToExecute // TODO cleanup
-} = useEvmTransactionFlow({...});
+} = useEvmTransactionFlow({
+...
+}: UseEvmTransactionFlowParams);
+
+
+interface UseEvmTransactionFlowParams {
+  tokenType: TokenType; // ERC20 | ERC721 | ERC1155 | NATIVE
+  tokenAddress: Address; // Target contract address
+  spender?: Address; // Optional: Who will spend tokens (if approval needed)
+  tokenId?: bigint; // For ERC721/ERC1155
+  amount?: bigint; // For ERC20/ERC1155
+  confirmations?: number; // Defaults to 1
+  requireExplicitApproval?: boolean; // set true if you want to force approval
+  contractAddress: Address; // address that should be called to execute `functionName`
+  abi: Abi; // see viem documentation
+  functionName: string; // see viem documentation
+  args: unknown[]; // see viem documentation
+}
+
 ```
 
 ### Trigger `run()`
@@ -65,7 +98,7 @@ const handleClick = () => {
 
 [ ] sophisticated status handling  
 [ ] proper integration testing with wagmi mock  
-[ ] tbd...  
+[ ] tbd...
 
 ## License
 
