@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { useState } from "react";
 import { type Abi, type Address } from "viem";
-import { useTransactionFlow } from "../context/TransactionFlowProvider";
-import type { TokenType } from "../types/transaction";
+import type { TokenType, TransactionStep } from "../types/transaction";
 import { approve } from "../utils/approve";
 import { checkAllowance } from "../utils/checkAllowance";
 import { confirmTransaction } from "../utils/confirmTransaction";
@@ -35,49 +35,48 @@ export const useEvmTransactionFlow = ({
   functionName,
   args,
 }: UseEvmTransactionFlowParams) => {
-  const {
-    walletClientReady,
-    setStep,
-    setError,
-    step,
-    error,
-    approveHash,
-    setApproveHash,
-    executeHash,
-    setExecuteHash,
-  } = useTransactionFlow();
+  const [step, setStep] = useState<TransactionStep>("idle");
+  const [error, setError] = useState<string | undefined>(undefined);
+  const [approveHash, setApproveHash] = useState<Address | undefined>(
+    undefined
+  );
+  const [executeHash, setExecuteHash] = useState<Address | undefined>(
+    undefined
+  );
   const { publicClient, walletClient, account } = useEvmClients();
 
   // --- Step 1: Check allowance (for ERC20/721/1155) ---
-  const { data: isAllowanceSufficient, isLoading: isLoadingAllowance } =
-    useQuery({
-      enabled:
-        walletClientReady && !!spender && !!amount && tokenType !== "NATIVE",
-      queryKey: [
-        "checkAllowance",
+  const {
+    data: isAllowanceSufficient,
+    isLoading: isLoadingAllowance,
+    refetch: refetchAllowance,
+  } = useQuery({
+    enabled: walletClient && !!spender && !!amount && tokenType !== "NATIVE",
+    queryKey: [
+      "checkAllowance",
+      tokenType,
+      tokenAddress,
+      spender,
+      tokenId?.toString(),
+      amount?.toString(),
+    ],
+    queryFn: async () => {
+      setStep("checkingAllowance");
+      const allowed = await checkAllowance({
         tokenType,
         tokenAddress,
-        spender,
-        tokenId?.toString(),
-        amount?.toString(),
-      ],
-      queryFn: async () => {
-        setStep("checkingAllowance");
-        const allowed = await checkAllowance({
-          tokenType,
-          tokenAddress,
-          account,
-          publicClient,
-          spender: spender!,
-          tokenId,
-          amount,
-        });
+        account,
+        publicClient,
+        spender: spender!,
+        tokenId,
+        amount,
+      });
 
-        if (requireExplicitApproval || allowed) setStep("ready");
+      if (requireExplicitApproval || allowed) setStep("ready");
 
-        return allowed;
-      },
-    });
+      return allowed;
+    },
+  });
 
   // --- Step 2: Approve if needed ---
   const { mutateAsync: triggerApproval, isPending: isPendingApprove } =
@@ -135,18 +134,18 @@ export const useEvmTransactionFlow = ({
     try {
       setError(undefined);
 
-      if (!walletClientReady) throw new Error("Wallet client not ready");
+      if (!Boolean(walletClient)) throw new Error("Wallet client not ready");
 
       if (tokenType !== "NATIVE") {
         if (!spender || !amount)
           throw new Error("Spender and amount required for tokens");
 
-        if (!requireExplicitApproval && !isAllowanceSufficient) {
+        if (
+          requireExplicitApproval ||
+          (!requireExplicitApproval && !isAllowanceSufficient)
+        ) {
           await triggerApproval();
-        }
-
-        if (requireExplicitApproval && !isAllowanceSufficient) {
-          throw new Error("Approval required but not yet given");
+          await refetchAllowance();
         }
       }
 
@@ -181,6 +180,6 @@ export const useEvmTransactionFlow = ({
     isSuccess: step === "success",
 
     isError: step === "error",
-    isReady: walletClientReady,
+    isReady: Boolean(walletClient),
   };
 };

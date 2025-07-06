@@ -5,7 +5,6 @@ import { EvmTransactionFlowWrapper as ConnectKitEvmTransactionFlowWrapper } from
 import { Web3ConnectKitProvider } from "./components/connectkit/Web3ConnectKitProvider";
 import { EvmTransactionFlowWrapper as RainbowKitEvmTransactionFlowWrapper } from "./components/rainbowkit/EvmTransactionFlowWrapper";
 import { Web3RainbowKitProvider } from "./components/rainbowkit/Web3RainbowKitProvider";
-import { TransactionFlowProvider } from "./context/TransactionFlowProvider";
 
 function App() {
   return (
@@ -14,25 +13,19 @@ function App() {
         <div>
           <div style={{ marginBottom: "10px" }}>ConnectKit</div>
           <Web3ConnectKitProvider>
-            <TransactionFlowProvider>
-              <ConnectKitEvmTransactionFlowWrapper />
-            </TransactionFlowProvider>
+            <ConnectKitEvmTransactionFlowWrapper />
           </Web3ConnectKitProvider>
         </div>
         <div>
           <div style={{ marginBottom: "10px" }}>AppKit</div>
           <Web3AppKitProvider>
-            <TransactionFlowProvider>
-              <AppKitEvmTransactionFlowWrapper />
-            </TransactionFlowProvider>
+            <AppKitEvmTransactionFlowWrapper />
           </Web3AppKitProvider>
         </div>
         <div>
           <div style={{ marginBottom: "10px" }}>RainbowKit</div>
           <Web3RainbowKitProvider>
-            <TransactionFlowProvider>
-              <RainbowKitEvmTransactionFlowWrapper />
-            </TransactionFlowProvider>
+            <RainbowKitEvmTransactionFlowWrapper />
           </Web3RainbowKitProvider>
         </div>
       </div>

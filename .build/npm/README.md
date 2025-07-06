@@ -23,14 +23,6 @@ npm install @s3panyol/use-evm-transaction-flow
 
 ## Usage
 
-### Provider
-
-```tsx
-<TransactionFlowProvider>
-  {/* USE HOOK IN CHILD COMPONENT */}
-</TransactionFlowProvider>
-```
-
 ### Hook
 
 #### useEvmClients
@@ -69,7 +61,6 @@ const {
 ...
 }: UseEvmTransactionFlowParams);
 
-
 interface UseEvmTransactionFlowParams {
   tokenType: TokenType; // ERC20 | ERC721 | ERC1155 | NATIVE
   tokenAddress: Address; // Target contract address
@@ -77,7 +68,7 @@ interface UseEvmTransactionFlowParams {
   tokenId?: bigint; // For ERC721/ERC1155
   amount?: bigint; // For ERC20/ERC1155
   confirmations?: number; // Defaults to 1
-  requireExplicitApproval?: boolean; // set true if you want to force approval
+  requireExplicitApproval?: boolean; // set to true if you want to force approval
   contractAddress: Address; // address that should be called to execute `functionName`
   abi: Abi; // see viem documentation
   functionName: string; // see viem documentation

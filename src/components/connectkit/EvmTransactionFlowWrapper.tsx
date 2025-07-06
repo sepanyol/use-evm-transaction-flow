@@ -43,6 +43,7 @@ export const EvmTransactionFlowWrapper = () => {
     tokenType: "ERC20",
     spender: WETH,
     amount: BigInt(balanceWrapper || 0),
+    requireExplicitApproval: true,
   });
 
   const handleDeposit = useCallback(() => {
