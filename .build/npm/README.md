@@ -45,6 +45,9 @@ const {
     run, // executes the process
     step, // text representation of hook status
     error, // stores the error message
+    reset, // resets the hook to its initial state "idle"
+    approveHash, // provides the approval transaction hash, in case it's needed
+    executeHash, // provides the execution transaction hash, in case it's needed
     isIdle, // initial state
     isReadyToExecute, // flag if approval is necessary
     isCheckingAllowance, // flag for checking allowance if not ETH

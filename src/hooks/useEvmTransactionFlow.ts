@@ -79,31 +79,38 @@ export const useEvmTransactionFlow = ({
   });
 
   // --- Step 2: Approve if needed ---
-  const { mutateAsync: triggerApproval, isPending: isPendingApprove } =
-    useMutation({
-      mutationFn: async () => {
-        setStep("waitingForApproval");
-        const txHash = await approve({
-          tokenType,
-          tokenAddress,
-          walletClient,
-          account: account,
-          spender: spender!,
-          amount,
-        });
+  const {
+    mutateAsync: triggerApproval,
+    isPending: isPendingApprove,
+    reset: resetApproval,
+  } = useMutation({
+    mutationFn: async () => {
+      setStep("waitingForApproval");
+      const txHash = await approve({
+        tokenType,
+        tokenAddress,
+        walletClient,
+        account: account,
+        spender: spender!,
+        amount,
+      });
 
-        setApproveHash(txHash);
+      setApproveHash(txHash);
 
-        setStep("waitingForApprovalTxConfirmation");
-        await confirmTransaction(txHash, confirmations, publicClient!);
+      setStep("waitingForApprovalTxConfirmation");
+      await confirmTransaction(txHash, confirmations, publicClient!);
 
-        return txHash;
-      },
-    });
+      return txHash;
+    },
+  });
 
   // --- Step 3: Send main transaction ---
   const nativeValue = tokenType === "NATIVE" ? amount : undefined;
-  const { mutateAsync: sendTx, isPending: isPendingExecuting } = useMutation({
+  const {
+    mutateAsync: sendTx,
+    isPending: isPendingExecuting,
+    reset: resetExecute,
+  } = useMutation({
     mutationFn: async () => {
       setStep("executing");
       const txHash = await executeContractFunction({
@@ -157,28 +164,34 @@ export const useEvmTransactionFlow = ({
     }
   };
 
+  const reset = () => {
+    setStep("idle");
+    setError(undefined);
+    setApproveHash(undefined);
+    setExecuteHash(undefined);
+    resetApproval();
+    resetExecute();
+  };
+
   return {
     run,
     step,
     error,
+    reset,
     approveHash,
     executeHash,
     isIdle: step === "idle",
     isReadyToExecute: step === "ready",
-
     isCheckingAllowance: isLoadingAllowance || step === "checkingAllowance",
     isPendingApprove,
     isWaitingForApproval: step === "waitingForApproval",
     isWaitingForApprovalTxConfirmation:
       step === "waitingForApprovalTxConfirmation",
-
     isExecuting: step === "executing",
     isPendingExecuting,
     isWaitingForExecutionTxConfirmation:
       step === "waitingForExecutionTxConfirmation",
-
     isSuccess: step === "success",
-
     isError: step === "error",
     isReady: Boolean(walletClient),
   };
