@@ -5,6 +5,7 @@ import type {
   TransactionFlowContextValue,
   TransactionStep,
 } from "../types/transaction";
+import type { Address } from "viem";
 
 const TransactionFlowContext = createContext<
   TransactionFlowContextValue | undefined
@@ -15,6 +16,12 @@ export const TransactionFlowProvider: React.FC<{
 }> = ({ children }) => {
   const [step, setStep] = useState<TransactionStep>("idle");
   const [error, setError] = useState<string | undefined>(undefined);
+  const [approveHash, setApproveHash] = useState<Address | undefined>(
+    undefined
+  );
+  const [executeHash, setExecuteHash] = useState<Address | undefined>(
+    undefined
+  );
 
   const wagmiContext = useContext(WagmiContext);
   // Runtime safety check: Is Wagmi context available?
@@ -36,6 +43,10 @@ export const TransactionFlowProvider: React.FC<{
     error,
     setStep,
     setError,
+    approveHash,
+    setApproveHash,
+    executeHash,
+    setExecuteHash,
   };
 
   return (

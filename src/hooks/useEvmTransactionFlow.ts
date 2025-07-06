@@ -35,8 +35,17 @@ export const useEvmTransactionFlow = ({
   functionName,
   args,
 }: UseEvmTransactionFlowParams) => {
-  const { walletClientReady, setStep, setError, step, error } =
-    useTransactionFlow();
+  const {
+    walletClientReady,
+    setStep,
+    setError,
+    step,
+    error,
+    approveHash,
+    setApproveHash,
+    executeHash,
+    setExecuteHash,
+  } = useTransactionFlow();
   const { publicClient, walletClient, account } = useEvmClients();
 
   // --- Step 1: Check allowance (for ERC20/721/1155) ---
@@ -84,6 +93,8 @@ export const useEvmTransactionFlow = ({
           amount,
         });
 
+        setApproveHash(txHash);
+
         setStep("waitingForApprovalTxConfirmation");
         await confirmTransaction(txHash, confirmations, publicClient!);
 
@@ -106,6 +117,8 @@ export const useEvmTransactionFlow = ({
         account: account!,
         value: nativeValue,
       });
+
+      setExecuteHash(txHash);
 
       setStep("waitingForExecutionTxConfirmation");
 
@@ -149,6 +162,8 @@ export const useEvmTransactionFlow = ({
     run,
     step,
     error,
+    approveHash,
+    executeHash,
     isIdle: step === "idle",
     isReadyToExecute: step === "ready",
 
